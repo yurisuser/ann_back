@@ -10,7 +10,12 @@ export class UserController{
     
     @Get()
     async findAll(): Promise<any[]> {
-        return await this.userSrv.findAll();
+        const users = await this.userSrv.findAll();
+        return users.map(x => {
+            const { password, ...result } = x;
+            return result;
+        })
+        
     }
 
     @Put()
