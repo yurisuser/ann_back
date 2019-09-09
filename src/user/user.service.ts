@@ -13,11 +13,10 @@ export class UserService{
     ){}
 
     async findAll(): Promise<any[]> {
-        const ans = await this.repository.find();
-        return ans.map(x => delete x.password);
+       return await this.repository.find();
     }
 
-    async findByLogin(login: string): Promise<any> {       
+    async findByName(name: string): Promise<any> {       
         return await this.repository.findOne({name});
     }
 
