@@ -1,0 +1,8 @@
+JWT_SECRET=_]Zb53"5.`W(;HGcpb^PWeT);yAnX8yB)`/^Ht%2
+JWT_EXPIRES=1d
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=qqaazz112233
+DB_NAME=proj
