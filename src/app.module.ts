@@ -18,7 +18,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
     }),
     UserModule,
-    AuthModule, 
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
