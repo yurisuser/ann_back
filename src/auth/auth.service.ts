@@ -3,6 +3,8 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UserService } from '../user/user.service';
 import { PasswordService } from './password.service';
+import { jwtAccesExpire, jwtRefrechExpire } from '../config/config';
+import { EJwtType } from './types/ejwt-types';
 
 @Injectable()
 export class AuthService {
@@ -22,10 +24,13 @@ export class AuthService {
       return null;
     }
 
-    async createToken(userId: number): Promise<any> {
+    async createAccessToken(userId: number): Promise<string> {
       const user = await this.userSrv.findById(userId);
-      return {
-        access_token: this.jwtService.sign({id: user.id, name: user.name}),
-      };
+      return this.jwtService.sign({ type: EJwtType.access, userId, name: user.name, role: user.role.role }, { expiresIn: jwtAccesExpire });
     }
+
+    async createRefreshToken(userId: number): Promise<string> {
+      return this.jwtService.sign({ type: EJwtType.refresh, userId }, { expiresIn: jwtRefrechExpire });
+    }
+
 }
