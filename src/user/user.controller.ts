@@ -3,6 +3,7 @@ import { Controller, Get, Put, Body, HttpException, HttpStatus, Delete, Param } 
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { PasswordService } from '../auth/password.service';
+import { CreateRoleDTO } from './dto/create.role.dto';
 
 @Controller('user')
 export class UserController {
@@ -29,10 +30,27 @@ export class UserController {
         return res;
     }
 
-    @Delete('/:id')
-    async delete(@Param('id') id: number): Promise<any> {
-        const user = await this.userSrv.findById(id);
+    @Delete('role')
+    async deleteRole(@Body() id: number): Promise<any> {
+        const role = await this.userSrv.findRoleById(id);
+        if (!role) { throw new HttpException('Role not exist', HttpStatus.BAD_REQUEST); }
+        return this.userSrv.deleteRole(id);
+    }
+
+    @Delete()
+    async delete(@Body() body: number): Promise<any> {
+        const user = await this.userSrv.findById(body);
         if (!user) { throw new HttpException('User not exist', HttpStatus.NOT_FOUND); }
-        return await this.userSrv.delete(id);
+        return await this.userSrv.delete(body);
+    }
+
+    @Get('role')
+    async getRoles(): Promise<any> {
+        return await this.userSrv.findAllRoles();
+    }
+
+    @Put('role')
+    async createRole(@Body() role: CreateRoleDTO) {
+        return await this.userSrv.findRole(role.role) || await this.userSrv.createRole(role.role);
     }
 }

@@ -25,7 +25,7 @@ export class UserService {
     }
 
     async findById(id: number): Promise<User> {
-        return await this.repositoryUser.findOne({id}, {relations: this.relation});
+        return await this.repositoryUser.findOne(id, {relations: this.relation});
     }
 
     async create(user: CreateUserDto): Promise<User> {
@@ -38,7 +38,27 @@ export class UserService {
         return this.repositoryUser.delete(id);
     }
 
+    async createRole(role: string): Promise<Role> {
+        return this.repositoryRole.save({role});
+    }
+
+    async findAllRoles(): Promise<Role[]> {
+        return await this.repositoryRole.find();
+    }
+
+    async findRole(role: string): Promise<Role> {
+        return await this.repositoryRole.findOne(role);
+    }
+
+    async findRoleById(id: number): Promise<Role> {
+        return await this.repositoryRole.findOne(id);
+    }
+
     private async getRoleDefault() {
         return  await this.repositoryRole.findOne({role: 'default'}) || this.repositoryRole.save({role: 'default'});
+    }
+
+    async deleteRole(id: number): Promise<any> {
+        return this.repositoryRole.delete(id);
     }
 }
