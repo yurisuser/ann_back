@@ -23,7 +23,7 @@ export class UserController {
 
     @Put()
     async createUser(@Body() newUser: CreateUserDto): Promise<any> {
-        const user = await this.userSrv.findByName(newUser.name);
+        const user = await this.userSrv.findBylogin(newUser.login);
         if (user) { throw new HttpException('User already registered', HttpStatus.BAD_REQUEST); }
         newUser.password = await this.passwordSrv.createHashPassword(newUser.password);
         const {password, ...res} = await this.userSrv.create(newUser);

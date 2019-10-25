@@ -8,11 +8,24 @@ export class User {
     id: number;
 
     @Column({unique: true, length: 255})
-    name: string;
+    login: string;
 
     @Column({ length: 255 })
     password: string;
 
-    @ManyToOne(type => Role, role => role.id)
+    @ManyToOne(type => Role, role => role.id, {nullable: true})
     role: Role;
+
+    @Column({length: 255, nullable: true})
+    firstName: string;
+
+    @Column({length: 255, nullable: true})
+    patronymic: string;
+
+    @Column({length: 255, nullable: true})
+    lastName: string;
+
+    @Column({nullable: true})
+    registrationDate: Date;
+
 }

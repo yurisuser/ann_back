@@ -15,8 +15,8 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async validateUser(name: string, pass: string): Promise<any> {
-      const user = await this.userSrv.findByName(name);
+    async validateUser(login: string, pass: string): Promise<any> {
+      const user = await this.userSrv.findBylogin(login);
       if (user && await this.passwordSrv.verifyPassword(pass, user.password)) {
         const { password, ...result } = user;
         return result;
@@ -26,7 +26,7 @@ export class AuthService {
 
     async createAccessToken(userId: number): Promise<string> {
       const user = await this.userSrv.findById(userId);
-      return this.jwtService.sign({ type: EJwtType.access, userId, name: user.name, role: user.role.role }, { expiresIn: jwtAccesExpire });
+      return this.jwtService.sign({ type: EJwtType.access, userId, login: user.login, role: user.role.role }, { expiresIn: jwtAccesExpire });
     }
 
     async createRefreshToken(userId: number): Promise<string> {

@@ -16,7 +16,7 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() user: LoginDto): Promise<JwtResponce> {
-        const ans = await this.authSrv.validateUser(user.name, user.password);
+        const ans = await this.authSrv.validateUser(user.login, user.password);
         if (!ans) {
             throw new HttpException('Wrong login/password', HttpStatus.UNAUTHORIZED);
         }
@@ -33,11 +33,5 @@ export class AuthController {
             access_token: await this.authSrv.createAccessToken(req.user.userId),
             refresh_token: await this.authSrv.createRefreshToken(req.user.userId),
         };
-    }
-
-    @UseGuards(AuthGuard('AccessJwt'))
-    @Post('test')
-    async test() {
-        return this.passSrv.generatePassword(122);
     }
 }

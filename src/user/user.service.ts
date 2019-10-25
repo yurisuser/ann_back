@@ -20,8 +20,8 @@ export class UserService {
        return await this.repositoryUser.find({relations: this.relation});
     }
 
-    async findByName(name: string): Promise<User> {
-        return await this.repositoryUser.findOne({name}, {relations: this.relation});
+    async findBylogin(login: string): Promise<User> {
+        return await this.repositoryUser.findOne({login}, {relations: this.relation});
     }
 
     async findById(id: number): Promise<User> {
@@ -29,8 +29,15 @@ export class UserService {
     }
 
     async create(user: CreateUserDto): Promise<User> {
-        const role = await this.getRoleDefault();
-        const userNew = await this.repositoryUser.save({name: user.name, password: user.password, role: {id: role.id}});
+        const userNew = await this.repositoryUser.save({
+            login: user.login,
+            password: user.password,
+            firstName: user.firstName || null,
+            patronymic: user.patronymic || null,
+            lastName: user.lastName || null,
+            registrationDate: new Date().toUTCString(),
+            role: {id: user.role} || await this.getRoleDefault(),
+        });
         return userNew;
     }
 
