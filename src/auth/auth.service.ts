@@ -25,8 +25,8 @@ export class AuthService {
     }
 
     async createAccessToken(userId: number): Promise<string> {
-      const user = await this.userSrv.findById(userId);
-      return this.jwtService.sign({ type: EJwtType.access, userId, login: user.login, role: user.role.role }, { expiresIn: jwtAccesExpire });
+      const {password, ...user} = await this.userSrv.findById(userId);
+      return this.jwtService.sign({user}, { expiresIn: jwtAccesExpire });
     }
 
     async createRefreshToken(userId: number): Promise<string> {

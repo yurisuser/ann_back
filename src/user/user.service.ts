@@ -31,6 +31,7 @@ export class UserService {
     async create(user: CreateUserDto): Promise<User> {
         const userNew = await this.repositoryUser.save({
             login: user.login,
+            email: user.email,
             password: user.password,
             firstName: user.firstName || null,
             patronymic: user.patronymic || null,

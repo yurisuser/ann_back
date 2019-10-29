@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Role } from './role.entity';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 @Entity()
 export class User {
@@ -12,6 +13,11 @@ export class User {
 
     @Column({ length: 255 })
     password: string;
+
+    @Column({length: 255, unique: true})
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
 
     @ManyToOne(type => Role, role => role.id, {nullable: true})
     role: Role;

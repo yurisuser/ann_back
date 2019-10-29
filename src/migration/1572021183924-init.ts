@@ -7,6 +7,9 @@ export class init1572021183924 implements MigrationInterface {
         await queryRunner.query("CREATE TABLE `role` (`id` int NOT NULL AUTO_INCREMENT, `role` varchar(255) NOT NULL, UNIQUE INDEX `IDX_367aad98203bd8afaed0d70409` (`role`), PRIMARY KEY (`id`)) ENGINE=InnoDB", undefined);
         await queryRunner.query("CREATE TABLE `user` (`id` int NOT NULL AUTO_INCREMENT, `login` varchar(255) NOT NULL, `password` varchar(255) NOT NULL, `firstName` varchar(255) NULL, `patronymic` varchar(255) NULL, `lastName` varchar(255) NULL, `registrationDate` datetime NULL, `roleId` int NULL, UNIQUE INDEX `IDX_a62473490b3e4578fd683235c5` (`login`), PRIMARY KEY (`id`)) ENGINE=InnoDB", undefined);
         await queryRunner.query("ALTER TABLE `user` ADD CONSTRAINT `FK_c28e52f758e7bbc53828db92194` FOREIGN KEY (`roleId`) REFERENCES `role`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION", undefined);
+        await queryRunner.query(`Insert into role (id, role ) values ('1', 'admin')`);
+        await queryRunner.query(`Insert into role (id, role ) values ('2', 'default')`);
+
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
