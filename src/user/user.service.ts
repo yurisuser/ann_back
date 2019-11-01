@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create.user.dto';
-import { Role } from './role.entity';
 
 @Injectable()
 export class UserService {
@@ -12,8 +11,6 @@ export class UserService {
     constructor(
         @InjectRepository(User)
         private repositoryUser: Repository<User>,
-        @InjectRepository(Role)
-        private repositoryRole: Repository<Role>,
     ) {}
 
     async findAll(): Promise<User[]> {
@@ -22,6 +19,11 @@ export class UserService {
 
     async findBylogin(login: string): Promise<User> {
         return await this.repositoryUser.findOne({login}, {relations: this.relation});
+    }
+
+    async check(param): Promise<any> {
+        const user = await this.repositoryUser.findOne(param);
+        return user ? user.id : false;
     }
 
     async findById(id: number): Promise<User> {
@@ -37,36 +39,12 @@ export class UserService {
             patronymic: user.patronymic || null,
             lastName: user.lastName || null,
             registrationDate: new Date().toUTCString(),
-            role: {id: user.role} || await this.getRoleDefault(),
+            role: {id: user.role} || null,
         });
         return userNew;
     }
 
     async delete(id: number) {
         return this.repositoryUser.delete(id);
-    }
-
-    async createRole(role: string): Promise<Role> {
-        return this.repositoryRole.save({role});
-    }
-
-    async findAllRoles(): Promise<Role[]> {
-        return await this.repositoryRole.find();
-    }
-
-    async findRole(role: string): Promise<Role> {
-        return await this.repositoryRole.findOne(role);
-    }
-
-    async findRoleById(id: number): Promise<Role> {
-        return await this.repositoryRole.findOne(id);
-    }
-
-    private async getRoleDefault() {
-        return  await this.repositoryRole.findOne({role: 'default'}) || this.repositoryRole.save({role: 'default'});
-    }
-
-    async deleteRole(id: number): Promise<any> {
-        return this.repositoryRole.delete(id);
     }
 }

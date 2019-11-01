@@ -1,9 +1,8 @@
-import { Controller, Get, Put, Body, HttpException, HttpStatus, Delete, Param } from '@nestjs/common';
+import { Controller, Get, Put, Body, HttpException, HttpStatus, Delete, Post } from '@nestjs/common';
 
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { PasswordService } from '../auth/password.service';
-import { CreateRoleDTO } from './dto/create.role.dto';
 
 @Controller('user')
 export class UserController {
@@ -21,6 +20,11 @@ export class UserController {
         });
     }
 
+    @Post('check')
+    async CheckExist(@Body() param: {key: string}): Promise<any> {
+         return await this.userSrv.check(param);
+    }
+
     @Put()
     async createUser(@Body() newUser: CreateUserDto): Promise<any> {
         const user = await this.userSrv.findBylogin(newUser.login);
@@ -30,27 +34,10 @@ export class UserController {
         return res;
     }
 
-    @Delete('role')
-    async deleteRole(@Body() id: number): Promise<any> {
-        const role = await this.userSrv.findRoleById(id);
-        if (!role) { throw new HttpException('Role not exist', HttpStatus.BAD_REQUEST); }
-        return this.userSrv.deleteRole(id);
-    }
-
     @Delete()
     async delete(@Body() body: number): Promise<any> {
         const user = await this.userSrv.findById(body);
         if (!user) { throw new HttpException('User not exist', HttpStatus.NOT_FOUND); }
         return await this.userSrv.delete(body);
-    }
-
-    @Get('role')
-    async getRoles(): Promise<any> {
-        return await this.userSrv.findAllRoles();
-    }
-
-    @Put('role')
-    async createRole(@Body() role: CreateRoleDTO) {
-        return await this.userSrv.findRole(role.role) || await this.userSrv.createRole(role.role);
     }
 }
