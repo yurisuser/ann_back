@@ -16,6 +16,7 @@ import { UserModule } from './user/user.module';
       database: 'proj',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
+      charset: 'utf8mb4',
     }),
     UserModule,
     AuthModule,

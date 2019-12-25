@@ -22,7 +22,7 @@ export class UserController {
 
     @Post('check')
     async CheckExist(@Body() param: {key: string}): Promise<any> {
-         return await this.userSrv.check(param);
+        return await this.userSrv.check(param);
     }
 
     @Put()
@@ -35,9 +35,13 @@ export class UserController {
     }
 
     @Delete()
-    async delete(@Body() body: number): Promise<any> {
-        const user = await this.userSrv.findById(body);
-        if (!user) { throw new HttpException('User not exist', HttpStatus.NOT_FOUND); }
-        return await this.userSrv.delete(body);
+    async delete(@Body() body: {ids: number[]}): Promise<any> {
+        console.log(body);
+
+        try {
+            return await this.userSrv.delete(body.ids);
+        } catch (error) {
+            throw new HttpException('wrong users id\'s array', HttpStatus.BAD_REQUEST);
+        }
     }
 }
