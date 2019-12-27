@@ -3,6 +3,8 @@ import { Controller, Get, Put, Body, HttpException, HttpStatus, Delete, Post } f
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { PasswordService } from '../auth/password.service';
+import { UpdateUserDto } from './dto/update.user.dto';
+import { ForcePswChangeDto } from './dto/force.psw.change.dto';
 
 @Controller('user')
 export class UserController {
@@ -25,7 +27,7 @@ export class UserController {
         return await this.userSrv.check(param);
     }
 
-    @Put()
+    @Put('create')
     async createUser(@Body() newUser: CreateUserDto): Promise<any> {
         const user = await this.userSrv.findBylogin(newUser.login);
         if (user) { throw new HttpException('User already registered', HttpStatus.BAD_REQUEST); }
@@ -34,10 +36,23 @@ export class UserController {
         return res;
     }
 
+    @Post('update')
+    async updateUser(@Body() editUser: UpdateUserDto): Promise<any> {
+        const user = await this.userSrv.findById(editUser.id);
+        if (!user) { throw new HttpException('User not foud', HttpStatus.NOT_FOUND); }
+        return this.userSrv.update(editUser);
+    }
+
+    @Post('forcepswchange')
+    async forcePasswordChange(@Body() data: ForcePswChangeDto) {
+        const passNew = await this.passwordSrv.createHashPassword(data.password);
+        const user = await this.userSrv.findById(data.id);
+        if (!user) { throw new HttpException('User not found', HttpStatus.NOT_FOUND); }
+        return this.userSrv.changePswForce(data.id, passNew);
+    }
+
     @Delete()
     async delete(@Body() body: {ids: number[]}): Promise<any> {
-        console.log(body);
-
         try {
             return await this.userSrv.delete(body.ids);
         } catch (error) {
