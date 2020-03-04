@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-import { IsString } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 
 @Entity()
 export class CatalogType {
@@ -14,4 +14,8 @@ export class CatalogType {
     @Column({length: 191, charset: 'utf8mb4', collation: 'utf8mb4_unicode_ci', unique: true})
     @IsString()
     viewName: string;
+
+    @Column()
+    @IsNumber()
+    order: number;
 }

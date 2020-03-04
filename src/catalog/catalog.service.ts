@@ -23,7 +23,7 @@ export class CatalogService {
     }
 
     async findAllCatalogElement(): Promise<CatalogElement[]> {
-        return this.repoCatElement.find();
+        return this.repoCatElement.find({ relations: ['catalogType'] });
     }
 
     async findOneCatalogTypes(catType): Promise<CatalogType> {

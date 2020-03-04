@@ -8,4 +8,7 @@ export class CreateCatalogTypeDto {
     @IsString()
     @IsNotEmpty()
     viewName: string;
+
+    @IsNotEmpty()
+    order: number;
 }

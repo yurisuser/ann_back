@@ -19,7 +19,16 @@ export class CatalogController {
 
     @Get('elements')
     async getElements() {
-        return this.srv.findAllCatalogElement();
+        const ans = await  this.srv.findAllCatalogElement();
+        return ans.map(x => {
+            return {
+                id: x.id,
+                catalogType: x.catalogType.id,
+                img: x.img,
+                viewName: x.viewName,
+                order: x.order,
+            };
+        });
     }
 
     @Put('type')
@@ -79,6 +88,7 @@ export class CatalogController {
             img: element.img,
             viewName: element.viewName,
             catalogType: type,
+            order: element.order,
         };
         await this.srv.updateCatalogElement(el);
         return this.srv.findAllCatalogElement();

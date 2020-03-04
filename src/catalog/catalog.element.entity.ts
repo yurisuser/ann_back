@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { IsString } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 
 import { CatalogType } from './catalog.type.entity';
 
@@ -19,4 +19,8 @@ export class CatalogElement {
     @Column()
     @IsString()
     img: string;
+
+    @Column()
+    @IsNumber()
+    order: number;
 }

@@ -7,7 +7,6 @@ export class UpdateCatalogElementDto {
     id: number;
 
     @IsNotEmpty()
-    @IsNumber()
     catalogType: number;
 
     @IsNotEmpty()
@@ -17,4 +16,7 @@ export class UpdateCatalogElementDto {
     @IsNotEmpty()
     @IsString()
     img: string;
+
+    @IsNotEmpty()
+    order: number;
 }

@@ -13,4 +13,7 @@ export class UpdateCatalogTypeDto {
     @IsNotEmpty()
     @IsString()
     viewName: string;
+
+    @IsNotEmpty()
+    order: number;
 }
