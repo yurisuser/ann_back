@@ -1,8 +1,7 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class DeleteDTO {
 
     @IsNotEmpty()
-    @IsNumber()
     id: number;
 }

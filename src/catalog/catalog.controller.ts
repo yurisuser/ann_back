@@ -57,9 +57,9 @@ export class CatalogController {
 
     @Delete('type')
     async deleteType(@Body() body: DeleteDTO) {
-        const elements = this.srv.findOneCatalogElement({catalogType: body.id});
+        const elements = await this.srv.findOneCatalogElement({catalogType: body.id});
         if (elements) {
-            throw new HttpException('Type must be unuseble', HttpStatus.BAD_REQUEST);
+            throw new HttpException('Type is using', HttpStatus.BAD_REQUEST);
         }
         await this.srv.deleteCatalogType(body.id);
         return this.getTypes();
