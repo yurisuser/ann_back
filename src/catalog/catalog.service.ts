@@ -43,6 +43,7 @@ export class CatalogService {
             viewName: newElement.viewName,
             img: newElement.img,
             catalogType: {id: newElement.catalogType},
+            order: newElement.order,
         });
     }
 

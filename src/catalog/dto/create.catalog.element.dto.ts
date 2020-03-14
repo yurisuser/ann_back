@@ -15,5 +15,6 @@ export class CreateCatalogElementDto {
     img: string;
 
     @IsNotEmpty()
+    @IsNumber()
     order: number;
 }
