@@ -1,8 +1,8 @@
 import { Controller, Get, Res, Param, Post, UseInterceptors, UploadedFile, HttpException, HttpStatus, Body, Delete } from '@nestjs/common';
 import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 import { extname } from 'path';
+import * as fs from 'fs';
 
 import { FilesService } from './files.service';
 import { imgPath } from '../config/config';
@@ -32,20 +32,28 @@ export class FilesController {
     }
 
     @Post()
-    @UseInterceptors(FileInterceptor('file', {
-        storage: diskStorage({
-            destination: imgPath,
-            filename: (req, file, cb) => {
-                const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
-                cb(null, `${randomName}${extname(file.originalname)}`);
-            },
-        }),
-      }))
+    @UseInterceptors(FileInterceptor('file'))
     async upload(@UploadedFile() file) {
         if (!file) {
-            throw new HttpException(`File name is exist`, HttpStatus.BAD_REQUEST);
+            throw new HttpException(`Back: Error getting file`, HttpStatus.BAD_REQUEST);
         }
-        return await this.fileSrv.createImg(file.filename, file.originalname);
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+            throw new HttpException('Not available image: jpg, jpeg, png, gif', HttpStatus.BAD_REQUEST);
+        }
+        const exist = await this.fileSrv.getFileEntity(file.originalname);
+        if (exist) {
+            throw new HttpException(`File with name '${file.originalname}' is exist`, HttpStatus.BAD_REQUEST);
+        }
+        const randomName = Array(32).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+        const name = `${randomName}${extname(file.originalname)}`;
+        const result = await this.fileSrv.createImg(name, file.originalname);
+        try {
+            fs.writeFileSync(imgPath + name, file.buffer);
+            return {fileName: result};
+        } catch (error) {
+            await this.fileSrv.deleteImg({names: [file.originalname]});
+            throw new HttpException('Back: Error save file', HttpStatus.BAD_REQUEST);
+        }
     }
 
     @Delete()

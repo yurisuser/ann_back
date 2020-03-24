@@ -39,7 +39,7 @@ export class FilesService {
         const ans = await this.repoFile.findOne({where: {originalName}});
         fs.exists(thumbPath + ans.name, async (exist) => {
             if (!exist) {
-                const thumbnail = await imageThumbnail( './src/assets/img/' + ans.name, option );
+                const thumbnail = await imageThumbnail( imgPath + ans.name, option );
                 await this.createThumb(thumbnail, ans.name);
             }
             return res.download(thumbPath + ans.name);
@@ -54,7 +54,7 @@ export class FilesService {
         });
     }
 
-    async getLineFile(originalName: string) {
+    async getFileEntity(originalName: string): Promise<Files> {
         return this.repoFile.findOne({where: {originalName}});
     }
 
