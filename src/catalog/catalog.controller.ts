@@ -14,7 +14,7 @@ export class CatalogController {
 
     @Get('types')
     async getTypes() {
-        return this.srv.findAllCatalogTypes();
+        return (await this.srv.findAllCatalogTypes()).sort((x, y) => x.id - y.id);
     }
 
     @Get('elements')
@@ -28,7 +28,7 @@ export class CatalogController {
                 viewName: x.viewName,
                 order: x.order,
             };
-        });
+        }).sort((x, y) => x.id - y.id);
     }
 
     @Put('type')
@@ -79,7 +79,7 @@ export class CatalogController {
 
     @Post('element')
     async updateElement(@Body() element: UpdateCatalogElementDto) {
-        const type = await this.srv.findOneCatalogTypes({id: element.id});
+        const type = await this.srv.findOneCatalogTypes({id: element.catalogType});
         if (!type) {
             throw new HttpException('Type of element is not exist', HttpStatus.BAD_REQUEST);
         }

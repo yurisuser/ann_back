@@ -47,12 +47,12 @@ export class CatalogService {
         });
     }
 
-    async deleteCatalogType(id: number): Promise<DeleteResult> {
-        return this.repoCatType.delete({id});
+    async deleteCatalogType(ids: number[]): Promise<DeleteResult> {
+        return this.repoCatType.delete(ids);
     }
 
-    async deleteCatalogElement(id: number): Promise<DeleteResult> {
-        return this.repoCatElement.delete({id});
+    async deleteCatalogElement(idArr: number[]): Promise<DeleteResult> {
+        return this.repoCatElement.delete(idArr);
     }
 
     async updateCatalogType(type: CatalogType): Promise<UpdateResult> {
