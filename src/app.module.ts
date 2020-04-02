@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { CatalogModule } from './catalog/catalog.module';
 import { FilesModule } from './files/files.module';
+import { GaleryModule } from './galery/galery.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { FilesModule } from './files/files.module';
     AuthModule,
     CatalogModule,
     FilesModule,
+    GaleryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
