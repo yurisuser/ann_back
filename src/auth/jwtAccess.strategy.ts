@@ -7,21 +7,21 @@ import { EJwtType } from './types/ejwt-types';
 
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy, 'AccessJwt') {
-  constructor() {
-    super({
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      ignoreExpiration: false,
-      secretOrKey: jwtSecret,
-    });
-  }
-
-  async validate(payload: any) {
-    if (payload.type === EJwtType.access) {
-      return {
-        userId: payload.userId,
-        type: payload.type,
-      };
+    constructor() {
+        super({
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            ignoreExpiration: false,
+            secretOrKey: jwtSecret,
+        });
     }
-    return false;
-  }
+
+    async validate(payload: any) {
+        if (payload.type === EJwtType.access) {
+            return {
+                userId: payload.userId,
+                type: payload.type,
+            };
+        }
+        return false;
+    }
 }

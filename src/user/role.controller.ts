@@ -1,7 +1,9 @@
-import { Controller, Delete, Body, HttpStatus, Get, Put, HttpException } from '@nestjs/common';
+import { Controller, Delete, Body, HttpStatus, Get, Put, HttpException, UseGuards, Request } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { CreateRoleDTO } from './dto/create.role.dto';
 import { RoleService } from './role.service';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @Controller('role')
 export class RoleController {
@@ -10,7 +12,9 @@ export class RoleController {
         private roleSrv: RoleService,
     ) {}
 
+    @UseGuards(AuthGuard('AccessJwt'))
     @Get()
+    // @Roles('admin')
     async getRoles(): Promise<any> {
         return await this.roleSrv.findAllRoles();
     }

@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 
 import { jwtSecret } from '../config/config';
+import { EJwtType } from './types/ejwt-types';
 
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'RefreshJwt') {
@@ -15,7 +16,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'RefreshJwt')
     }
 
     async validate(payload: any) {
-        if (payload.type === 'refresh') {
+        if (payload.type === EJwtType.refresh) {
             return {
                 userId: payload.userId,
                 type: payload.type,
