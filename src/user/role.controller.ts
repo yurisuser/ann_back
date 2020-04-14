@@ -1,20 +1,21 @@
-import { Controller, Delete, Body, HttpStatus, Get, Put, HttpException, UseGuards, Request } from '@nestjs/common';
+import { Controller, Delete, Body, HttpStatus, Get, Put, HttpException, UseGuards, Request, Req } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { CreateRoleDTO } from './dto/create.role.dto';
 import { RoleService } from './role.service';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { RoleGuard } from '../auth/guards/role.guard';
 
+@Roles('admin')
 @Controller('role')
+@UseGuards(AuthGuard('AccessJwt'), RoleGuard)
 export class RoleController {
 
     constructor(
         private roleSrv: RoleService,
     ) {}
 
-    @UseGuards(AuthGuard('AccessJwt'))
     @Get()
-    // @Roles('admin')
     async getRoles(): Promise<any> {
         return await this.roleSrv.findAllRoles();
     }

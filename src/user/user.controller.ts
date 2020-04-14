@@ -1,12 +1,17 @@
-import { Controller, Get, Put, Body, HttpException, HttpStatus, Delete, Post } from '@nestjs/common';
+import { Controller, Get, Put, Body, HttpException, HttpStatus, Delete, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { PasswordService } from '../auth/password.service';
 import { UpdateUserDto } from './dto/update.user.dto';
 import { ForcePswChangeDto } from './dto/force.psw.change.dto';
+import { RoleGuard } from '../auth/guards/role.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
 
+@Roles('admin')
 @Controller('user')
+@UseGuards(AuthGuard('AccessJwt'), RoleGuard)
 export class UserController {
     constructor(
         private userSrv: UserService,

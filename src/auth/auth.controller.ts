@@ -4,14 +4,12 @@ import { AuthGuard } from '@nestjs/passport';
 import { LoginDto } from './dto/login.dto';
 import { AuthService } from './auth.service';
 import { JwtResponce } from './types/jwt-responce.interface';
-import { PasswordService } from './password.service';
 
 @Controller('auth')
 export class AuthController {
 
     constructor(
         private authSrv: AuthService,
-        private passSrv: PasswordService,
     ) {}
 
     @Post('login')
