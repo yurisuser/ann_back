@@ -43,6 +43,7 @@ export class CatalogController {
                 headText: x.headText,
                 img: x.img,
                 paragraphText: x.paragraphText,
+                text: x.text,
                 spreadSheetPageNum: x.spreadSheetPageNum,
                 spreadsheetId: x.spreadsheetId,
             };
@@ -144,6 +145,7 @@ export class CatalogController {
             headText: page.headText,
             img: page.img,
             paragraphText: page.paragraphText,
+            text: page.text,
             spreadSheetPageNum: page.spreadSheetPageNum,
             spreadsheetId: page.spreadsheetId,
         };

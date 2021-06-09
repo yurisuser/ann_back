@@ -63,6 +63,7 @@ export class CatalogService {
             headText: newPage.headText,
             img: newPage.img,
             paragraphText: newPage.paragraphText,
+            text: newPage.text,
             spreadsheetId: newPage.spreadsheetId,
             spreadSheetPageNum: newPage.spreadSheetPageNum,
         });

@@ -15,6 +15,9 @@ export class CreateCatalogElementPageDto {
     paragraphText: string;
 
     @IsString()
+    text: string;
+
+    @IsString()
     spreadsheetId: string;
 
     @IsNumber()

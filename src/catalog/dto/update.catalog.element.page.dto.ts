@@ -19,6 +19,9 @@ export class  UpdateCatalogElementPageDto {
     paragraphText: string;
 
     @IsString()
+    text: string;
+
+    @IsString()
     spreadsheetId: string;
 
     @IsNumber()

@@ -25,6 +25,10 @@ export class CatalogElementPage {
 
     @Column()
     @IsString()
+    text: string;
+
+    @Column()
+    @IsString()
     spreadsheetId: string;
 
     @Column()
