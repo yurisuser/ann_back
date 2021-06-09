@@ -6,8 +6,8 @@ import { CatalogType } from './catalog.type.entity';
 import { CatalogElement } from './catalog.element.entity';
 import { CreateCatalogTypeDto } from './dto/create.catalog.type.dto';
 import { CreateCatalogElementDto } from './dto/create.catalog.element.dto';
-import { UpdateCatalogTypeDto } from './dto/update.catalog.type';
-import { UpdateCatalogElementDto } from './dto/update.catalog.element.dto';
+import { CatalogElementPage } from './catalog.element.page.entity';
+import { CreateCatalogElementPageDto } from './dto/create.catalog.elemet.page.dto';
 
 @Injectable()
 export class CatalogService {
@@ -16,6 +16,8 @@ export class CatalogService {
         private repoCatType: Repository<CatalogType>,
         @InjectRepository(CatalogElement)
         private repoCatElement: Repository<CatalogElement>,
+        @InjectRepository(CatalogElementPage)
+        private repoCatElementPage: Repository<CatalogElementPage>,
     ) {}
 
     async findAllCatalogTypes(): Promise<CatalogType[]> {
@@ -26,12 +28,20 @@ export class CatalogService {
         return this.repoCatElement.find({ relations: ['catalogType'] });
     }
 
+    async FindAllCatalogElementPages(): Promise<CatalogElementPage[]> {
+        return this.repoCatElementPage.find({relations: ['catalogElement']});
+    }
+
     async findOneCatalogTypes(catType): Promise<CatalogType> {
         return this.repoCatType.findOne(catType);
     }
 
     async findOneCatalogElement(catElement): Promise<CatalogElement> {
         return this.repoCatElement.findOne(catElement);
+    }
+
+    async findOneCatalogElementPage(page): Promise<CatalogElementPage> {
+        return this.repoCatElementPage.findOne(page);
     }
 
     async createCatalogType(newType: CreateCatalogTypeDto): Promise<CatalogType> {
@@ -47,6 +57,17 @@ export class CatalogService {
         });
     }
 
+    async createCatalogElementPage(newPage: CreateCatalogElementPageDto): Promise<CatalogElementPage> {
+        return this.repoCatElementPage.save({
+            catalogElement: {id: newPage.catalogElement},
+            headText: newPage.headText,
+            img: newPage.img,
+            paragraphText: newPage.paragraphText,
+            spreadsheetId: newPage.spreadsheetId,
+            spreadSheetPageNum: newPage.spreadSheetPageNum,
+        });
+    }
+
     async deleteCatalogType(ids: number[]): Promise<DeleteResult> {
         return this.repoCatType.delete(ids);
     }
@@ -55,11 +76,19 @@ export class CatalogService {
         return this.repoCatElement.delete(idArr);
     }
 
+    async deleteCatalogElementPage(ids: number[]): Promise<DeleteResult> {
+        return this.repoCatElementPage.delete(ids);
+    }
+
     async updateCatalogType(type: CatalogType): Promise<UpdateResult> {
         return this.repoCatType.update({id: type.id}, type);
     }
 
     async updateCatalogElement(element: CatalogElement): Promise<UpdateResult> {
         return this.repoCatElement.update({id: element.id}, element);
+    }
+
+    async updateCatalogElementPage(page: CatalogElementPage): Promise<UpdateResult> {
+        return this.repoCatElementPage.update({id: page.id}, page);
     }
 }

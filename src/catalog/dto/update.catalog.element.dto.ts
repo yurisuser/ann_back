@@ -7,6 +7,7 @@ export class UpdateCatalogElementDto {
     id: number;
 
     @IsNotEmpty()
+    @IsNumber()
     catalogType: number;
 
     @IsNotEmpty()
