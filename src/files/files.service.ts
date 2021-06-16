@@ -1,7 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Response } from 'express';
 import * as fs from 'fs';
-import imageThumbnail = require('image-thumbnail');
+// import imageThumbnail = require('image-thumbnail');
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 
@@ -35,19 +35,20 @@ export class FilesService {
     }
 
     async getThumbnail(res: Response, originalName: string) {
-        const option = {width: 100, height: 100, responseType: 'buffer'};
-        const ans = await this.repoFile.findOne({where: {originalName}});
-        fs.exists(thumbPath + ans.name, async (exist) => {
-            if (!exist) {
-                const thumbnail = await imageThumbnail( imgPath + ans.name, option );
-                await this.createThumb(thumbnail, ans.name);
-            }
-            return res.download(thumbPath + ans.name);
-        });
+        // const option = {width: 100, height: 100, responseType: 'buffer'};
+        // const ans = await this.repoFile.findOne({where: {originalName}});
+        // fs.exists(thumbPath + ans.name, async (exist) => {
+        //     if (!exist) {
+        //         const thumbnail = await imageThumbnail( imgPath + ans.name, option );
+        //         await this.createThumb(thumbnail, ans.name);
+        //     }
+        //     return res.download(thumbPath + ans.name);
+        // });
+        return null;
     }
 
     async saveImg(data, name) {
-        return new Promise((res, rej) => {
+        return new Promise<void>((res, rej) => {
             fs.writeFile(imgPath + name, data, (err) => {
                 err ? rej(err) : res();
             });
@@ -63,7 +64,7 @@ export class FilesService {
     }
 
     private async createThumb(data, name: string) {
-        return new Promise((res, rej) => {
+        return new Promise<void>((res, rej) => {
             fs.writeFile(thumbPath + name, data, (err) => {
                 err ? rej(err) : res();
             });
