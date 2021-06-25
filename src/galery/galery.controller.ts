@@ -59,7 +59,7 @@ export class GaleryController {
 
     @Delete('type')
     async deleteType(@Body() body: DeleteDTO) {
-        const elements = await this.srv.findOneElement({catalogType: body.id});
+        const elements = await this.srv.findOneElement({galeryType: body.id});
         if (elements) {
             throw new HttpException('Type is using', HttpStatus.BAD_REQUEST);
         }
