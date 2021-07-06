@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from '../../node_modules/bcrypt';
 
 import { salt } from '../config/config';
 

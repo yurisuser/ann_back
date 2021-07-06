@@ -3,7 +3,7 @@ module.exports = [{
     "host": "localhost",
     "port": 3306,
     "username": "work",
-    "password": "qwerty12345",
+    "password": "Qwerty12345",
     "database": "proj",
     "autoSchemaSync": true,
     "entities": [`./src/**/*.entity.ts`],
